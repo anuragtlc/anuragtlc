@@ -1,0 +1,276 @@
+/* STANDARD RULES FOR RESPONSIVE DESIGN CONTENT LAYOUT - DO NOT ALTER */
+
+/* Prevent Mobile Safari layout issues with padding being added to page */
+
+main, section {
+    box-sizing: border-box;
+}
+
+/* Flexbloc is a simple flexbox layout that works cross-browser for RWD, more lightweight and functional than grids */
+/* Lockbloc allows same kind of row layout, but without wrapping or change at small screen sizes */
+
+/* Core layout units are children of a flexbloc (or lockbloc) */
+
+.flexbloc > div, .lockbloc > div {
+    flex: 1 1 0%;
+    box-sizing: border-box;
+    min-width: 1px; /* Add some intrinsic basic size, allows FF to correctly calculate size for divs holding images, rather than forcing sizes based on image intrinsic dimensions */
+}
+
+/* Don't add padding to subrows, only to core layout units (which hold content) */
+
+.flexbloc.meta > div {
+    padding: 0;
+}
+
+/* Default is to layout bloc units in a row */
+
+.flexbloc, .lockbloc {
+    display: flex;
+    flex-direction: row;
+}
+
+/* On smallest viewports, collapse all boxes to vertical stack (column) */
+/* We override flex-grow values, as some browsers may apply them to div height */
+
+/* Currently, flex-direction: column unfortunately breaks on iOS and IE, 
+   so we just keep direction as row, wrap the row, and ensure that the width of each div is 100% using flex-basis (below) */ 
+
+@media (max-width:480px) {
+    .flexbloc {
+        flex-wrap: wrap;
+    }
+    .flexbloc > div {
+        flex-grow: 1;
+        flex-basis: 100%;
+    }
+    .flexbloc.meta > div > div {
+        flex-grow: 1;
+        flex-basis: 100%;
+    }
+}
+
+/* Optional "meta" bloc can lay out several blocs, and can be used to collapse "subrows" into a vertical stack at mid-size screens while maintaining row layout within the subrow */
+
+/* Currently, flex-direction: column unfortunately breaks on iOS 8 and IE, so we just keep direction as row, wrap the row,
+and ensure that the width of each div is 100% using flex-basis (below); setting min-heights might also work */ 
+
+@media (max-width:1024px) {
+    .flexbloc.meta {
+        flex-wrap: wrap;
+    }
+    .flexbloc.meta > div {
+        flex-grow: 1;
+        flex-basis: 100%;
+    }
+}
+
+/* Define different proportioned units within a bloc using these classes */
+
+.flexbloc .width2, .lockbloc .width2 { flex-grow: 2; }
+.flexbloc .width3, .lockbloc .width3 { flex-grow: 3; }
+.flexbloc .width4, .lockbloc .width4 { flex-grow: 4; }
+.flexbloc .width5, .lockbloc .width5 { flex-grow: 5; }
+.flexbloc .width6, .lockbloc .width6 { flex-grow: 6;  }
+
+
+/* FLUID MEDIA CORE DEFINITIONS - DO NOT ALTER*/
+
+/* Fluid scaling for fixed size media so that if displayed on mobile or small browser window, 
+   or within a container div of small size, they will fit into available space */
+/* Also set height to auto: this ensures that the aspect ratio is held constant, even when resized using CSS */
+
+
+img, video, canvas, figure { 
+    max-width: 100%; 
+    height: auto !important;
+    vertical-align: top; /*  Do not respect typographical layout defaults for media */
+}
+
+.upsize {
+    width: 100%;
+}
+
+/* This rule allows figures to work as fluid media */
+
+figure img, figure canvas, figure video {
+    display: block;
+    width: 100%;
+}
+
+/* Figure styling starter - browser defaults are crazy */
+
+figure { margin: 0; padding: 0; position: relative; }
+
+figcaption {
+    background: rgba(255,255,255,1); 
+    text-align: center;
+    caption-side: bottom;
+    padding: 0.25em;
+    border: 1px solid #ccc;
+    border-top: 0;
+    font-weight: bold; 
+}
+
+figcaption.overlay {
+    background: rgba(255,255,255,0.8); 
+    position: absolute; 
+    bottom: 0; 
+    right: 0; 
+    left: 0;
+    color: black;
+}
+
+/* These rules are used specifically to make the old Brightcove Player or Bluetube player fluid, 
+   probably no longer required
+*/
+
+.BrightcoveExperience, .bluetube-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* 56.25% defines a 16:9 aspect ratio = widescreen default */
+
+.bc-container, .bluetube-wrapper {
+    position: relative;
+    height: 0;
+    padding-bottom: 56.25%; 
+    padding-top: 48px; /* Extra space for playback controls */
+}
+
+/* sd = standard definition = 4:3 aspect ratio */
+
+.bc-container.sd , .bluetube-wrapper.sd {
+    padding-bottom: 75%;
+}
+
+/* Playback controls are overlaid in BT, so need for extra padding */
+
+.bluetube-wrapper {
+    padding-top: 0px; 
+}
+
+/* A11Y */
+
+/* Use this class if you need to create content that is for screenreader users only, and is visually hidden. */
+
+.hidden{
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* FOUK */
+
+.init { visibility: hidden; }
+
+/* TYPOGRAPHY: IBM Plex */
+
+/* Normal Sans */
+
+@font-face{
+    font-family: 'plexsans';
+    font-style: normal;
+    font-weight: 800;
+    src: url('plex/sans/IBMPlexSans-Bold-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: normal;
+    font-weight: 700;
+    src: url('plex/sans/IBMPlexSans-SemiBold-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: normal;
+    font-weight: 600;
+    src: url('plex/sans/IBMPlexSans-Medium-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: normal;
+    font-weight: 500;
+    src: url('plex/sans/IBMPlexSans-Text-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: normal;
+    font-weight: 400;
+    src: url('plex/sans/IBMPlexSans-Regular-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: normal;
+    font-weight: 300;
+    src: url('plex/sans/IBMPlexSans-Light-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: normal;
+    font-weight: 200;
+    src: url('plex/sans/IBMPlexSans-ExtraLight-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: normal;
+    font-weight: 100;
+    src: url('plex/sans/IBMPlexSans-Thin-V01.1.woff') format('woff');
+}
+
+/* Italic */
+
+@font-face{
+    font-family: 'plexsans';
+    font-style: italic;
+    font-weight: 800;
+    src: url('plex/sans/IBMPlexSans-BoldItalic-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: italic;
+    font-weight: 700;
+    src: url('plex/sans/IBMPlexSans-SemiBoldItalic-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: italic;
+    font-weight: 600;
+    src: url('plex/sans/IBMPlexSans-MediumItalic-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: italic;
+    font-weight: 500;
+    src: url('plex/sans/IBMPlexSans-TextItalic-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: italic;
+    font-weight: 400;
+    src: url('plex/sans/IBMPlexSans-Italic-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: italic;
+    font-weight: 300;
+    src: url('plex/sans/IBMPlexSans-LightItalic-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: italic;
+    font-weight: 200;
+    src: url('plex/sans/IBMPlexSans-ExtraLightItalic-V01.1.woff') format('woff');
+}
+@font-face{
+    font-family: 'plexsans';
+    font-style: italic;
+    font-weight: 100;
+    src: url('plex/sans/IBMPlexSans-Thin-V01.1.woff') format('woff');
+}
